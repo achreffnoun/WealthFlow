@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  font-family: 'Material Symbols Outlined';
+}
+
+.tonal-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(30, 41, 59, 0.05);
+  padding: 20px;
+}
+
+.glass-header {
+  backdrop-filter: blur(8px);
+  background: rgba(249, 249, 255, 0.8);
+}
+
+.progress-fill-mint { background-color: #10B981; }
+.progress-fill-amber { background-color: #F59E0B; }
+.progress-fill-red { background-color: #EF4444; }
+
+.hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.hover-lift:hover { transform: translateY(-2px); box-shadow: 0px 12px 24px rgba(30, 41, 59, 0.08); }
+
+input[type='checkbox'] {
+  accent-color: #0058be;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #ecedf7 25%, #e1e2ec 37%, #ecedf7 63%);
+  background-size: 800px 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

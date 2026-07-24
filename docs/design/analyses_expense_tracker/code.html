@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WealthFlow Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+        .shadow-level-1 {
+            box-shadow: 0px 4px 12px rgba(30, 41, 59, 0.05);
+        }
+        .transaction-list-border:not(:last-child) {
+            border-bottom: 1px solid #E2E8F0;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eff0fa",
+                        "on-background": "#191b23",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-dim": "#d8d9e3",
+                        "on-surface": "#191b23",
+                        "on-secondary-fixed": "#002113",
+                        "on-surface-variant": "#424754",
+                        "secondary-fixed-dim": "#4edea3",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-primary": "#adc6ff",
+                        "surface-tint": "#005ac2",
+                        "secondary": "#006c49",
+                        "surface-container-low": "#f2f3fd",
+                        "secondary-container": "#6cf8bb",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "primary": "#0058be",
+                        "outline": "#727785",
+                        "on-tertiary-container": "#fffbff",
+                        "tertiary-container": "#b75b00",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "surface-variant": "#e1e2ec",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#924700",
+                        "on-secondary-container": "#00714d",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-tertiary-fixed": "#311400",
+                        "on-primary-fixed": "#001a42",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e1e2ec",
+                        "outline-variant": "#c2c6d6",
+                        "surface-container-high": "#e6e7f2",
+                        "primary-container": "#2170e4",
+                        "surface-container": "#ecedf7",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#fefcff",
+                        "on-primary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "inverse-surface": "#2e3038",
+                        "background": "#f9f9ff",
+                        "primary-fixed-dim": "#adc6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "12px",
+                        "gutter": "16px",
+                        "stack-sm": "4px",
+                        "container-padding-desktop": "32px",
+                        "container-padding-mobile": "16px",
+                        "base": "8px",
+                        "stack-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Outfit"],
+                        "headline-md": ["Inter"],
+                        "amount-md": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Outfit"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Outfit"],
+                        "amount-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "amount-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "amount-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- SideNavBar (Shared Component Anchor) -->
+<aside class="bg-surface dark:bg-inverse-surface h-screen w-64 fixed left-0 top-0 shadow-sm flex flex-col h-full py-stack-lg z-50 hidden md:flex">
+<div class="px-gutter mb-stack-lg">
+<h1 class="font-display-lg text-display-lg text-primary dark:text-inverse-primary leading-tight">WealthFlow</h1>
+<p class="text-on-surface-variant text-label-sm">Personal Finance</p>
+</div>
+<nav class="flex-1 flex flex-col gap-base px-gutter">
+<!-- Analytics is Active -->
+<a class="flex items-center gap-base p-stack-md transition-colors hover:bg-surface-container-high dark:hover:bg-surface-variant active:scale-95 duration-150 text-on-surface-variant dark:text-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-base p-stack-md transition-colors hover:bg-surface-container-high dark:hover:bg-surface-variant active:scale-95 duration-150 text-on-surface-variant dark:text-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md">Expenses</span>
+</a>
+<a class="flex items-center gap-base p-stack-md transition-colors hover:bg-surface-container-high dark:hover:bg-surface-variant active:scale-95 duration-150 text-on-surface-variant dark:text-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-body-md">Budgets</span>
+</a>
+<a class="flex items-center gap-base p-stack-md transition-colors hover:bg-surface-container-high dark:hover:bg-surface-variant active:scale-95 duration-150 text-on-surface-variant dark:text-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="ads_click">ads_click</span>
+<span class="font-body-md">Goals</span>
+</a>
+<a class="flex items-center gap-base p-stack-md transition-colors hover:bg-surface-container-high dark:hover:bg-surface-variant active:scale-95 duration-150 text-primary font-bold border-r-4 border-primary dark:text-inverse-primary dark:border-inverse-primary" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-body-md">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto px-gutter py-stack-lg">
+<button class="w-full bg-primary text-on-primary py-stack-md px-gutter rounded-lg font-bold flex items-center justify-center gap-base active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>Add Transaction</span>
+</button>
+</div>
+</aside>
+<!-- TopNavBar (Shared Component Anchor) -->
+<header class="h-[64px] fixed top-0 right-0 left-0 md:left-64 z-40 bg-surface dark:bg-inverse-surface shadow-sm flex items-center justify-between px-gutter">
+<div class="flex items-center gap-stack-lg flex-1">
+<div class="bg-surface-container-low dark:bg-surface-variant rounded-full flex items-center px-gutter py-base w-full max-w-md">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full ml-base outline-none" placeholder="Rechercher..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<button class="material-symbols-outlined p-base text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-base text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all" data-icon="settings">settings</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a person with a warm, confident smile, set against a blurred modern office background with soft natural lighting. The image captures a clean and trustworthy financial expert aesthetic with high-fidelity neutral tones and a subtle blue accent, reflecting a modern professional branding style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApv8b527GLEaeSSaErdHQCslZMzmUSbex_KEftq319NpgSkX6649y2PuhqNCDzniTh_3IiBa1x3CG50-WbRlyeQpeJMACx6fccFmtPtpngSvuJg6HrWQfjrEbBKliOQb5ACSp3e5OlwJhqGqh4XKPFugFpTv6yHcsGtM0uDc_ig3Gb8vdiY6MkcGjg9KZlLQWZA-TRoI45MzdyVexCO9VDIan23wpX4WWoNXyfzvlQkF8j-gQcI6a3LrpNDDbB577XzTaajHBTePs"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-[80px] pb-stack-lg px-container-padding-mobile md:px-container-padding-desktop md:ml-64 min-h-screen">
+<!-- Dashboard Header & Period Selector -->
+<section class="flex flex-col md:flex-row md:items-center justify-between mb-stack-lg gap-gutter">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Analyses Financières</h2>
+<p class="text-on-surface-variant font-body-md">Suivez vos performances et optimisez vos dépenses.</p>
+</div>
+<div class="bg-surface-container flex p-1 rounded-xl shadow-inner self-start">
+<button class="px-gutter py-base text-label-sm rounded-lg transition-all hover:bg-surface-container-high text-on-surface-variant">7j</button>
+<button class="px-gutter py-base text-label-sm rounded-lg transition-all bg-white shadow-sm text-primary font-bold">30j</button>
+<button class="px-gutter py-base text-label-sm rounded-lg transition-all hover:bg-surface-container-high text-on-surface-variant">90j</button>
+<button class="px-gutter py-base text-label-sm rounded-lg transition-all hover:bg-surface-container-high text-on-surface-variant">6m</button>
+<button class="px-gutter py-base text-label-sm rounded-lg transition-all hover:bg-surface-container-high text-on-surface-variant">1y</button>
+</div>
+</section>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-stack-lg">
+<div class="bg-surface-container-lowest p-gutter rounded-xl shadow-level-1 border border-outline-variant/30 group hover:-translate-y-1 transition-transform">
+<div class="flex items-center gap-base mb-base">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg" data-icon="account_balance">account_balance</span>
+<span class="text-on-surface-variant text-label-sm uppercase tracking-wider">Total Dépenses</span>
+</div>
+<div class="font-amount-lg text-amount-lg text-on-background">3 450,20 €</div>
+<div class="mt-base flex items-center gap-base text-secondary font-label-sm">
+<span class="material-symbols-outlined text-sm" data-icon="trending_down">trending_down</span>
+<span>-12% vs mois dernier</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-gutter rounded-xl shadow-level-1 border border-outline-variant/30 group hover:-translate-y-1 transition-transform">
+<div class="flex items-center gap-base mb-base">
+<span class="material-symbols-outlined text-tertiary bg-tertiary/10 p-2 rounded-lg" data-icon="calendar_today">calendar_today</span>
+<span class="text-on-surface-variant text-label-sm uppercase tracking-wider">Moyenne Quotidienne</span>
+</div>
+<div class="font-amount-lg text-amount-lg text-on-background">115,00 €</div>
+<div class="mt-base flex items-center gap-base text-error font-label-sm">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span>+5% vs mois dernier</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-gutter rounded-xl shadow-level-1 border border-outline-variant/30 group hover:-translate-y-1 transition-transform">
+<div class="flex items-center gap-base mb-base">
+<span class="material-symbols-outlined text-secondary bg-secondary/10 p-2 rounded-lg" data-icon="shopping_cart">shopping_cart</span>
+<span class="text-on-surface-variant text-label-sm uppercase tracking-wider">Catégorie coûteuse</span>
+</div>
+<div class="font-amount-lg text-amount-lg text-on-background">Loyer & Maison</div>
+<div class="mt-base text-on-surface-variant font-label-sm">
+                    35% du budget total
+                </div>
+</div>
+<div class="bg-surface-container-lowest p-gutter rounded-xl shadow-level-1 border border-outline-variant/30 group hover:-translate-y-1 transition-transform">
+<div class="flex items-center gap-base mb-base">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg" data-icon="receipt_long">receipt_long</span>
+<span class="text-on-surface-variant text-label-sm uppercase tracking-wider">Transactions</span>
+</div>
+<div class="font-amount-lg text-amount-lg text-on-background">42</div>
+<div class="mt-base text-on-surface-variant font-label-sm">
+                    8 transactions planifiées
+                </div>
+</div>
+</div>
+<!-- AI Insights Highlight -->
+<div class="bg-primary/5 border border-primary/20 p-gutter rounded-xl mb-stack-lg flex items-start gap-gutter">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center shrink-0 shadow-lg">
+<span class="material-symbols-outlined text-on-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<h3 class="font-headline-md text-primary mb-1">Insight Assistant IA</h3>
+<p class="text-on-surface-variant font-body-md leading-relaxed">
+                    📈 <span class="font-bold text-on-background">Félicitations !</span> Vous avez dépensé <span class="text-secondary font-bold">15% de moins</span> en Divertissement ce mois-ci par rapport à votre moyenne habituelle. Cela représente une économie de 85,50 € que vous pourriez placer dans votre objectif <span class="underline decoration-primary">"Voyage au Japon"</span>.
+                </p>
+</div>
+</div>
+<!-- Charts Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-stack-lg mb-stack-lg">
+<!-- Category Distribution (Pie Chart Simulation) -->
+<div class="bg-surface-container-lowest p-gutter rounded-xl shadow-level-1 border border-outline-variant/30">
+<h3 class="font-headline-md text-on-background mb-stack-lg">Dépenses par Catégorie</h3>
+<div class="flex flex-col md:flex-row items-center gap-stack-lg">
+<div class="relative w-48 h-48 flex items-center justify-center">
+<!-- Custom CSS SVG Drawing for simulation -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#E2E8F0" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#0058be" stroke-dasharray="40 100" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#006c49" stroke-dasharray="25 100" stroke-dashoffset="-40" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#924700" stroke-dasharray="20 100" stroke-dashoffset="-65" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="#ba1a1a" stroke-dasharray="15 100" stroke-dashoffset="-85" stroke-width="4"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-label-sm text-on-surface-variant">TOTAL</span>
+<span class="font-amount-md text-on-background">3.4k €</span>
+</div>
+</div>
+<div class="flex-1 grid grid-cols-1 gap-2">
+<div class="flex items-center justify-between text-body-md">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span>Loyer & Maison</span>
+</div>
+<span class="font-amount-md">40%</span>
+</div>
+<div class="flex items-center justify-between text-body-md">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span>Alimentation</span>
+</div>
+<span class="font-amount-md">25%</span>
+</div>
+<div class="flex items-center justify-between text-body-md">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+<span>Transport</span>
+</div>
+<span class="font-amount-md">20%</span>
+</div>
+<div class="flex items-center justify-between text-body-md">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-error"></div>
+<span>Autres</span>
+</div>
+<span class="font-amount-md">15%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Evolution Line Chart (Line Chart Simulation) -->
+<div class="bg-surface-container-lowest p-gutter rounded-xl shadow-level-1 border border-outline-variant/30">
+<h3 class="font-headline-md text-on-background mb-stack-lg">Évolution des Dépenses</h3>
+<div class="h-48 w-full relative pt-4">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<path d="M0,35 Q10,30 20,32 T40,20 T60,25 T80,10 T100,15" fill="none" stroke="#0058be" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+<path d="M0,35 Q10,30 20,32 T40,20 T60,25 T80,10 T100,15 L100,40 L0,40 Z" fill="url(#lineGradient)" opacity="0.1"></path>
+<defs>
+<lineargradient id="lineGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#0058be"></stop>
+<stop offset="100%" stop-color="#0058be" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="flex justify-between mt-base text-label-sm text-on-surface-variant font-body-md px-1">
+<span>Sem 1</span>
+<span>Sem 2</span>
+<span>Sem 3</span>
+<span>Sem 4</span>
+</div>
+</div>
+<div class="mt-4 p-base bg-surface-container rounded-lg flex items-center justify-between text-body-md">
+<span class="text-on-surface-variant">Pic de dépense :</span>
+<span class="font-bold text-on-background">18 Sep — 240,00 €</span>
+</div>
+</div>
+<!-- Month Comparison (Bar Chart Simulation) -->
+<div class="bg-surface-container-lowest p-gutter rounded-xl shadow-level-1 border border-outline-variant/30 lg:col-span-2">
+<h3 class="font-headline-md text-on-background mb-stack-lg">Comparaison Mensuelle</h3>
+<div class="flex items-end justify-between h-48 gap-stack-lg px-gutter">
+<!-- Bars -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high rounded-t-lg h-[60%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-on-background text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">2.1k €</div>
+</div>
+<span class="text-label-sm text-on-surface-variant uppercase">Mai</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high rounded-t-lg h-[75%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-on-background text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">2.6k €</div>
+</div>
+<span class="text-label-sm text-on-surface-variant uppercase">Juin</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high rounded-t-lg h-[90%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-on-background text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.1k €</div>
+</div>
+<span class="text-label-sm text-on-surface-variant uppercase">Juil</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-primary rounded-t-lg h-[100%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.4k €</div>
+</div>
+<span class="text-label-sm text-primary font-bold uppercase">Août</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high rounded-t-lg h-[40%] animate-pulse"></div>
+<span class="text-label-sm text-on-surface-variant uppercase italic">Sept...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Details Table -->
+<section class="bg-surface-container-lowest rounded-xl shadow-level-1 border border-outline-variant/30 overflow-hidden mb-stack-lg">
+<div class="px-gutter py-stack-md border-b border-outline-variant/20 flex justify-between items-center">
+<h3 class="font-headline-md text-on-background">Détails par Catégorie</h3>
+<button class="text-primary font-label-sm flex items-center gap-1 hover:underline">
+                    Exporter CSV <span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm uppercase tracking-wider">
+<th class="px-gutter py-stack-md">Catégorie</th>
+<th class="px-gutter py-stack-md">Total dépensé</th>
+<th class="px-gutter py-stack-md">% du Budget</th>
+<th class="px-gutter py-stack-md">Moy. Transaction</th>
+<th class="px-gutter py-stack-md">Tendance</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-body-md">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="home">home</span>
+</div>
+<span class="font-bold">Loyer & Maison</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md font-amount-md">1 200,00 €</td>
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-base">
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 w-[70%]"></div>
+</div>
+<span class="text-label-sm">35%</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md font-amount-md">400,00 €</td>
+<td class="px-gutter py-stack-md text-on-surface-variant">Stable</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="restaurant">restaurant</span>
+</div>
+<span class="font-bold">Alimentation</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md font-amount-md">850,20 €</td>
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-base">
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 w-[25%]"></div>
+</div>
+<span class="text-label-sm">25%</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md font-amount-md">35,42 €</td>
+<td class="px-gutter py-stack-md text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="arrow_upward">arrow_upward</span> 12%
+                            </td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-lg bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="directions_car">directions_car</span>
+</div>
+<span class="font-bold">Transport</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md font-amount-md">680,00 €</td>
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-base">
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 w-[20%]"></div>
+</div>
+<span class="text-label-sm">20%</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md font-amount-md">68,00 €</td>
+<td class="px-gutter py-stack-md text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="arrow_downward">arrow_downward</span> 5%
+                            </td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-lg bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-sm" data-icon="movie">movie</span>
+</div>
+<span class="font-bold">Divertissement</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md font-amount-md">450,00 €</td>
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-base">
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 w-[13%]"></div>
+</div>
+<span class="text-label-sm">13%</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md font-amount-md">15,00 €</td>
+<td class="px-gutter py-stack-md text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="arrow_downward">arrow_downward</span> 15%
+                            </td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component Anchor - for Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-[64px] bg-surface dark:bg-inverse-surface shadow-lg flex items-center justify-around px-gutter z-50">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-label-sm">Dashboard</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="text-[10px] font-label-sm">Expenses</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary transition-all active:scale-95 font-bold">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="text-[10px] font-label-sm">Analytics</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="text-[10px] font-label-sm">Budgets</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-label-sm">Settings</span>
+</button>
+</nav>
+<!-- Micro-interactions Script -->
+<script>
+        // Simple interactivity for period selector
+        document.querySelectorAll('.bg-surface-container button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.bg-surface-container button').forEach(b => {
+                    b.classList.remove('bg-white', 'shadow-sm', 'text-primary', 'font-bold');
+                    b.classList.add('hover:bg-surface-container-high', 'text-on-surface-variant');
+                });
+                e.target.classList.add('bg-white', 'shadow-sm', 'text-primary', 'font-bold');
+                e.target.classList.remove('hover:bg-surface-container-high', 'text-on-surface-variant');
+            });
+        });
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchContainer = searchInput.parentElement;
+        searchInput.addEventListener('focus', () => {
+            searchContainer.classList.add('ring-2', 'ring-primary/20', 'bg-white');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchContainer.classList.remove('ring-2', 'ring-primary/20', 'bg-white');
+        });
+    </script>
+</body></html>
