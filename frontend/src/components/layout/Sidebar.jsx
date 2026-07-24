@@ -12,7 +12,7 @@ export default function Sidebar({ onQuickAdd }) {
   return (
     <aside className="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface shadow-sm py-stack-lg z-50">
       <div className="px-gutter mb-stack-lg">
-        <h1 className="font-display-lg text-display-lg text-primary leading-tight">WealthFlow</h1>
+        <h1 className="font-display-lg text-display-md text-primary leading-tight">WealthFlow</h1>
         <p className="text-on-surface-variant font-label-sm opacity-70">Personal Finance</p>
       </div>
       <nav className="flex-1 px-4 space-y-2">
