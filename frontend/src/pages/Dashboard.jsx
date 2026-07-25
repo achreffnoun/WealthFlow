@@ -11,18 +11,25 @@ import {
   averagePerDay,
   last30DaysSeries,
   budgetStatusColor,
+  netBalance,
+  savingsRate,
 } from '../utils/calculations'
 import ProgressBar from '../components/ui/ProgressBar'
 import { SkeletonCard, SkeletonTable } from '../components/ui/Skeleton'
 import EmptyState from '../components/ui/EmptyState'
 
 export default function Dashboard() {
-  const { expenses, budgets, goals, loading } = useApp()
+  const { expenses, incomes, budgets, goals, loading } = useApp()
   const { user } = useAuth()
 
   const now = new Date()
   const monthExpenses = filterByMonth(expenses, now.getMonth() + 1, now.getFullYear())
   const totalMonth = totalAmount(monthExpenses)
+
+  const monthIncomes = filterByMonth(incomes, now.getMonth() + 1, now.getFullYear())
+  const totalIncomeMonth = totalAmount(monthIncomes)
+  const balanceMonth = netBalance(incomes, expenses, now.getMonth() + 1, now.getFullYear())
+  const savingsRateMonth = savingsRate(incomes, expenses, now.getMonth() + 1, now.getFullYear())
 
   const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1)
   const prevMonthExpenses = filterByMonth(expenses, prevMonthDate.getMonth() + 1, prevMonthDate.getFullYear())
@@ -59,8 +66,8 @@ export default function Dashboard() {
             <p className="font-body-md text-on-surface-variant">{formatDateLong(now)}</p>
           </div>
         </section>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-stack-lg">
-          {Array.from({ length: 4 }).map((_, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter mb-stack-lg">
+          {Array.from({ length: 6 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
@@ -88,10 +95,17 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* SECTION 2: KPI CARDS */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-stack-lg">
+      {/* SECTION 2: INCOME VS EXPENSES */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter mb-stack-lg">
         <div className="tonal-card hover-lift flex flex-col justify-between">
-          <span className="font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Total Mois</span>
+          <span className="font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Revenu Mois</span>
+          <div className="font-amount-lg text-amount-lg text-secondary">{formatCurrency(totalIncomeMonth)}</div>
+          <Link to="/revenus" className="mt-4 text-label-sm text-primary hover:underline">
+            Ajouter un revenu
+          </Link>
+        </div>
+        <div className="tonal-card hover-lift flex flex-col justify-between">
+          <span className="font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Dépenses Mois</span>
           <div className="font-amount-lg text-amount-lg text-on-background">{formatCurrency(totalMonth)}</div>
           {monthDelta !== null && (
             <div className={`mt-4 flex items-center gap-1 text-label-sm ${monthDelta <= 0 ? 'text-secondary' : 'text-error'}`}>
@@ -102,6 +116,19 @@ export default function Dashboard() {
             </div>
           )}
         </div>
+        <div className="tonal-card hover-lift flex flex-col justify-between">
+          <span className="font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Solde Mois</span>
+          <div className={`font-amount-lg text-amount-lg ${balanceMonth >= 0 ? 'text-secondary' : 'text-error'}`}>
+            {formatCurrency(balanceMonth)}
+          </div>
+          <div className="mt-4 text-on-surface-variant text-label-sm">
+            {savingsRateMonth === null ? 'Ajoutez un revenu pour voir le taux' : `${savingsRateMonth}% du revenu épargné`}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: KPI CARDS */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter mb-stack-lg">
         <div className="tonal-card hover-lift flex flex-col justify-between">
           <span className="font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Budget Utilisé</span>
           <div className="font-amount-lg text-amount-lg text-on-background">{budgetUsedPercent}%</div>

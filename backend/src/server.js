@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express'
 import { swaggerSpec } from './config/swagger.js'
 import authRoutes from './routes/auth.js'
 import expenseRoutes from './routes/expenses.js'
+import incomeRoutes from './routes/incomes.js'
 import budgetRoutes from './routes/budgets.js'
 import goalRoutes from './routes/goals.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -21,6 +22,7 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok' }))
 
 app.use('/api/auth', authRoutes)
 app.use('/api/expenses', expenseRoutes)
+app.use('/api/incomes', incomeRoutes)
 app.use('/api/budgets', budgetRoutes)
 app.use('/api/goals', goalRoutes)
 

@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import Dashboard from './pages/Dashboard'
 import ExpensesPage from './pages/ExpensesPage'
+import IncomesPage from './pages/IncomesPage'
 import BudgetsPage from './pages/BudgetsPage'
 import GoalsPage from './pages/GoalsPage'
 import AnalyticsPage from './pages/AnalyticsPage'
@@ -18,6 +19,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/depenses" element={<ExpensesPage />} />
+          <Route path="/revenus" element={<IncomesPage />} />
           <Route path="/budgets" element={<BudgetsPage />} />
           <Route path="/objectifs" element={<GoalsPage />} />
           <Route path="/analyses" element={<AnalyticsPage />} />

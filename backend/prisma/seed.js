@@ -35,6 +35,13 @@ async function main() {
     ],
   })
 
+  await prisma.income.createMany({
+    data: [
+      { userId: user.id, amount: 2400, source: 'SALARY', description: 'Salaire mensuel', date: daysAgo(5) },
+      { userId: user.id, amount: 300, source: 'FREELANCE', description: 'Mission freelance', date: daysAgo(10) },
+    ],
+  })
+
   await prisma.budget.createMany({
     data: [
       { userId: user.id, category: 'FOOD', limit: 400, month: now.getMonth() + 1, year: now.getFullYear() },

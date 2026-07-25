@@ -15,6 +15,19 @@ export const CATEGORY_MAP = Object.fromEntries(CATEGORIES.map((c) => [c.code, c]
 
 export const getCategory = (code) => CATEGORY_MAP[code] || CATEGORY_MAP.OTHER
 
+export const INCOME_SOURCES = [
+  { code: 'SALARY', label: 'Salaire', icon: 'work', color: '#2ECC71' },
+  { code: 'BONUS', label: 'Prime', icon: 'redeem', color: '#F1C40F' },
+  { code: 'FREELANCE', label: 'Freelance', icon: 'laptop_mac', color: '#3498DB' },
+  { code: 'INVESTMENT', label: 'Investissement', icon: 'trending_up', color: '#9B59B6' },
+  { code: 'GIFT', label: 'Cadeau', icon: 'card_giftcard', color: '#FF8B94' },
+  { code: 'OTHER', label: 'Autre', icon: 'category', color: '#34495E' },
+]
+
+export const INCOME_SOURCE_MAP = Object.fromEntries(INCOME_SOURCES.map((s) => [s.code, s]))
+
+export const getIncomeSource = (code) => INCOME_SOURCE_MAP[code] || INCOME_SOURCE_MAP.OTHER
+
 export const CURRENCY = 'EUR'
 export const LOCALE = 'fr-FR'
 

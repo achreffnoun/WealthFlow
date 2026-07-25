@@ -12,3 +12,5 @@ export const CATEGORIES = [
 ]
 
 export const GOAL_STATUS = ['active', 'completed', 'abandoned']
+
+export const INCOME_SOURCES = ['SALARY', 'BONUS', 'FREELANCE', 'INVESTMENT', 'GIFT', 'OTHER']

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: 'dashboard', end: true },
   { to: '/depenses', label: 'Expenses', icon: 'payments' },
+  { to: '/revenus', label: 'Income', icon: 'paid' },
   { to: '/budgets', label: 'Budgets', icon: 'account_balance_wallet' },
   { to: '/objectifs', label: 'Goals', icon: 'ads_click' },
   { to: '/analyses', label: 'Analytics', icon: 'monitoring' },

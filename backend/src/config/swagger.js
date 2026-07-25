@@ -50,6 +50,22 @@ const options = {
             updatedAt: { type: 'string', format: 'date-time' },
           },
         },
+        Income: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            userId: { type: 'string' },
+            amount: { type: 'number', format: 'float' },
+            source: {
+              type: 'string',
+              enum: ['SALARY', 'BONUS', 'FREELANCE', 'INVESTMENT', 'GIFT', 'OTHER'],
+            },
+            description: { type: 'string', nullable: true },
+            date: { type: 'string', format: 'date-time' },
+            createdAt: { type: 'string', format: 'date-time' },
+            updatedAt: { type: 'string', format: 'date-time' },
+          },
+        },
         Budget: {
           type: 'object',
           properties: {

@@ -71,6 +71,27 @@ export function last30DaysSeries(expenses) {
   })
 }
 
+export function totalBySource(incomes) {
+  const map = {}
+  for (const i of incomes) {
+    map[i.source] = (map[i.source] || 0) + Number(i.amount)
+  }
+  return map
+}
+
+export function netBalance(incomes, expenses, month, year) {
+  const income = totalAmount(filterByMonth(incomes, month, year))
+  const spent = totalAmount(filterByMonth(expenses, month, year))
+  return income - spent
+}
+
+export function savingsRate(incomes, expenses, month, year) {
+  const income = totalAmount(filterByMonth(incomes, month, year))
+  if (income <= 0) return null
+  const spent = totalAmount(filterByMonth(expenses, month, year))
+  return Math.round(((income - spent) / income) * 100)
+}
+
 export function monthlyTotalsSeries(expenses, monthsBack = 6) {
   const today = new Date()
   const result = []

@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useAuth } from './AuthContext'
 import { expenseService } from '../services/expenseService'
+import { incomeService } from '../services/incomeService'
 import { budgetService } from '../services/budgetService'
 import { goalService } from '../services/goalService'
 
@@ -9,6 +10,7 @@ const AppContext = createContext(null)
 export function AppProvider({ children }) {
   const { isAuthenticated } = useAuth()
   const [expenses, setExpenses] = useState([])
+  const [incomes, setIncomes] = useState([])
   const [budgets, setBudgets] = useState([])
   const [goals, setGoals] = useState([])
   const [loading, setLoading] = useState(true)
@@ -16,18 +18,21 @@ export function AppProvider({ children }) {
   const refresh = useCallback(async () => {
     if (!isAuthenticated) {
       setExpenses([])
+      setIncomes([])
       setBudgets([])
       setGoals([])
       setLoading(false)
       return
     }
     setLoading(true)
-    const [expensesRes, budgetsRes, goalsRes] = await Promise.all([
+    const [expensesRes, incomesRes, budgetsRes, goalsRes] = await Promise.all([
       expenseService.list(),
+      incomeService.list(),
       budgetService.list(),
       goalService.list(),
     ])
     setExpenses(expensesRes.items)
+    setIncomes(incomesRes.items)
     setBudgets(budgetsRes.items)
     setGoals(goalsRes.items)
     setLoading(false)
@@ -48,6 +53,19 @@ export function AppProvider({ children }) {
   const deleteExpense = async (id) => {
     await expenseService.remove(id)
     setExpenses((prev) => prev.filter((e) => e.id !== id))
+  }
+
+  const addIncome = async (income) => {
+    const created = await incomeService.create(income)
+    setIncomes((prev) => [created, ...prev])
+  }
+  const updateIncome = async (id, patch) => {
+    const updated = await incomeService.update(id, patch)
+    setIncomes((prev) => prev.map((i) => (i.id === id ? updated : i)))
+  }
+  const deleteIncome = async (id) => {
+    await incomeService.remove(id)
+    setIncomes((prev) => prev.filter((i) => i.id !== id))
   }
 
   const addBudget = async (budget) => {
@@ -83,12 +101,16 @@ export function AppProvider({ children }) {
   const value = useMemo(
     () => ({
       expenses,
+      incomes,
       budgets,
       goals,
       loading,
       addExpense,
       updateExpense,
       deleteExpense,
+      addIncome,
+      updateIncome,
+      deleteIncome,
       addBudget,
       updateBudget,
       deleteBudget,
@@ -97,7 +119,7 @@ export function AppProvider({ children }) {
       addToGoal,
       deleteGoal,
     }),
-    [expenses, budgets, goals, loading],
+    [expenses, incomes, budgets, goals, loading],
   )
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
