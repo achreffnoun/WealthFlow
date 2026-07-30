@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
-
-const AVATAR_URL =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuCmpGMsIYCEu9QjbEkiKzdIVz5JeACX9gfYuQiMdSUUJ9NPvKwDuL5LMD9wTQ1df2kbJuGBJ85BVytYGmWT-3tMWAZiVNM-t9KS5AwDsyEQiZjVEeFi9yBQZC527iyDLqihcPV8vJVI2K5JRrj5TAXqLcXD0SBe6tbvnoMesN9SH_1NQUQhYrqU2rTckFA4DqfmmugB1jJeOlF5eB9G7ahenzQo9_G3q61wHy8tikhgewPy45wcj4G79rTlptki3WmCAQI62N1pNh0'
+import Avatar from '../ui/Avatar'
 
 export default function TopBar() {
-  const { logout } = useAuth()
+  const { user, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -30,28 +28,29 @@ export default function TopBar() {
             <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
           </button>
           <button
-            onClick={toggleTheme}
-            className="p-2 hover:bg-surface-container-low rounded-full transition-all"
-            aria-label="Basculer le thème"
-            title={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
-          >
-            <span className="material-symbols-outlined text-on-surface-variant">
-              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-            </span>
-          </button>
-          <button className="p-2 hover:bg-surface-container-low rounded-full transition-all">
-            <span className="material-symbols-outlined text-on-surface-variant">settings</span>
-          </button>
-          <button
             onClick={() => setMenuOpen((v) => !v)}
             className="h-8 w-8 rounded-full overflow-hidden border border-outline-variant"
           >
-            <img className="w-full h-full object-cover" src={AVATAR_URL} alt="Profil" />
+            <Avatar user={user} />
           </button>
           {menuOpen && (
             <>
               <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
-              <div className="absolute right-0 top-11 z-20 bg-surface-container-lowest rounded-lg shadow-level-2 border border-outline-variant/30 py-2 w-44">
+              <div className="absolute right-0 top-11 z-20 bg-surface-container-lowest rounded-lg shadow-level-2 border border-outline-variant/30 py-2 w-52">
+                <button
+                  onClick={toggleTheme}
+                  className="w-full text-left px-4 py-2 text-body-md text-on-surface hover:bg-surface-container-low flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+                  </span>
+                  {theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+                </button>
+                <button className="w-full text-left px-4 py-2 text-body-md text-on-surface hover:bg-surface-container-low flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">settings</span>
+                  Paramètres
+                </button>
+                <div className="my-1 border-t border-outline-variant/30" />
                 <button
                   onClick={logout}
                   className="w-full text-left px-4 py-2 text-body-md text-error hover:bg-surface-container-low flex items-center gap-2"
