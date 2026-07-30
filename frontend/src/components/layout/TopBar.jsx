@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { useTheme } from '../../context/ThemeContext'
 
 const AVATAR_URL =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuCmpGMsIYCEu9QjbEkiKzdIVz5JeACX9gfYuQiMdSUUJ9NPvKwDuL5LMD9wTQ1df2kbJuGBJ85BVytYGmWT-3tMWAZiVNM-t9KS5AwDsyEQiZjVEeFi9yBQZC527iyDLqihcPV8vJVI2K5JRrj5TAXqLcXD0SBe6tbvnoMesN9SH_1NQUQhYrqU2rTckFA4DqfmmugB1jJeOlF5eB9G7ahenzQo9_G3q61wHy8tikhgewPy45wcj4G79rTlptki3WmCAQI62N1pNh0'
 
 export default function TopBar() {
   const { logout } = useAuth()
+  const { theme, toggleTheme } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -26,6 +28,16 @@ export default function TopBar() {
         <div className="flex items-center gap-4 relative">
           <button className="p-2 hover:bg-surface-container-low rounded-full transition-all">
             <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
+          </button>
+          <button
+            onClick={toggleTheme}
+            className="p-2 hover:bg-surface-container-low rounded-full transition-all"
+            aria-label="Basculer le thème"
+            title={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+          >
+            <span className="material-symbols-outlined text-on-surface-variant">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
           </button>
           <button className="p-2 hover:bg-surface-container-low rounded-full transition-all">
             <span className="material-symbols-outlined text-on-surface-variant">settings</span>
