@@ -109,7 +109,7 @@ export async function update(req, res, next) {
         ...(categoryOrSource !== undefined && { categoryOrSource }),
         ...(description !== undefined && { description }),
         ...(frequency !== undefined && { frequency }),
-        ...(startDate !== undefined && { startDate: new Date(startDate) }),
+        ...(startDate !== undefined && { startDate: new Date(startDate), nextRunDate: new Date(startDate) }),
         ...(endDate !== undefined && { endDate: endDate ? new Date(endDate) : null }),
         ...(active !== undefined && { active: Boolean(active) }),
       },
