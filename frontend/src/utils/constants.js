@@ -36,6 +36,17 @@ export const BUDGET_THRESHOLDS = {
   WARNING: 90,
 }
 
+export const RECURRING_FREQUENCIES = [
+  { code: 'DAILY', label: 'Quotidien' },
+  { code: 'WEEKLY', label: 'Hebdomadaire' },
+  { code: 'MONTHLY', label: 'Mensuel' },
+  { code: 'YEARLY', label: 'Annuel' },
+]
+
+export const RECURRING_FREQUENCY_MAP = Object.fromEntries(RECURRING_FREQUENCIES.map((f) => [f.code, f]))
+
+export const getRecurringFrequency = (code) => RECURRING_FREQUENCY_MAP[code] || RECURRING_FREQUENCIES[2]
+
 export const GOAL_STATUS = {
   ACTIVE: 'active',
   COMPLETED: 'completed',

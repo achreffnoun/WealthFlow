@@ -9,6 +9,7 @@ import IncomesPage from './pages/IncomesPage'
 import BudgetsPage from './pages/BudgetsPage'
 import GoalsPage from './pages/GoalsPage'
 import AnalyticsPage from './pages/AnalyticsPage'
+import RecurringTransactionsPage from './pages/RecurringTransactionsPage'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/budgets" element={<BudgetsPage />} />
           <Route path="/objectifs" element={<GoalsPage />} />
           <Route path="/analyses" element={<AnalyticsPage />} />
+          <Route path="/recurrentes" element={<RecurringTransactionsPage />} />
         </Route>
       </Route>
     </Routes>

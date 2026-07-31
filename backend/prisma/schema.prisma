@@ -20,10 +20,11 @@ model User {
   updatedAt    DateTime @updatedAt
   lastLoginAt  DateTime?
 
-  expenses Expense[]
-  incomes  Income[]
-  budgets  Budget[]
-  goals    Goal[]
+  expenses             Expense[]
+  incomes              Income[]
+  budgets              Budget[]
+  goals                Goal[]
+  recurringTransactions RecurringTransaction[]
 }
 
 model Income {
@@ -87,4 +88,25 @@ model Goal {
   updatedAt    DateTime  @updatedAt
 
   @@index([userId, status])
+}
+
+model RecurringTransaction {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           String // INCOME | EXPENSE
+  amount         Float
+  categoryOrSource String // category (EXPENSE) ou source (INCOME)
+  description    String?
+  frequency      String // DAILY | WEEKLY | MONTHLY | YEARLY
+  startDate      DateTime
+  endDate        DateTime?
+  nextRunDate    DateTime
+  active         Boolean   @default(true)
+  lastGeneratedAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([active, nextRunDate])
+  @@index([userId])
 }

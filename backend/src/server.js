@@ -8,6 +8,7 @@ import expenseRoutes from './routes/expenses.js'
 import incomeRoutes from './routes/incomes.js'
 import budgetRoutes from './routes/budgets.js'
 import goalRoutes from './routes/goals.js'
+import recurringRoutes from './routes/recurring.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
 
 const app = express()
@@ -25,6 +26,7 @@ app.use('/api/expenses', expenseRoutes)
 app.use('/api/incomes', incomeRoutes)
 app.use('/api/budgets', budgetRoutes)
 app.use('/api/goals', goalRoutes)
+app.use('/api/recurring-transactions', recurringRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

@@ -95,6 +95,25 @@ const options = {
             updatedAt: { type: 'string', format: 'date-time' },
           },
         },
+        RecurringTransaction: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            userId: { type: 'string' },
+            type: { type: 'string', enum: ['INCOME', 'EXPENSE'] },
+            amount: { type: 'number', format: 'float' },
+            categoryOrSource: { type: 'string' },
+            description: { type: 'string', nullable: true },
+            frequency: { type: 'string', enum: ['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'] },
+            startDate: { type: 'string', format: 'date-time' },
+            endDate: { type: 'string', format: 'date-time', nullable: true },
+            nextRunDate: { type: 'string', format: 'date-time' },
+            active: { type: 'boolean' },
+            lastGeneratedAt: { type: 'string', format: 'date-time', nullable: true },
+            createdAt: { type: 'string', format: 'date-time' },
+            updatedAt: { type: 'string', format: 'date-time' },
+          },
+        },
         Error: {
           type: 'object',
           properties: {

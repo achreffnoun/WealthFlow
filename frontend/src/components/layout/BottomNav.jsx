@@ -7,6 +7,7 @@ const ITEMS = [
   { to: '/budgets', label: 'Budgets', icon: 'account_balance_wallet' },
   { to: '/objectifs', label: 'Goals', icon: 'ads_click' },
   { to: '/analyses', label: 'Analytics', icon: 'monitoring' },
+  { to: '/recurrentes', label: 'Recurring', icon: 'event_repeat' },
 ]
 
 export default function BottomNav() {

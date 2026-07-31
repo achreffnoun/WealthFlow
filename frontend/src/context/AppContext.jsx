@@ -4,6 +4,7 @@ import { expenseService } from '../services/expenseService'
 import { incomeService } from '../services/incomeService'
 import { budgetService } from '../services/budgetService'
 import { goalService } from '../services/goalService'
+import { recurringService } from '../services/recurringService'
 
 const AppContext = createContext(null)
 
@@ -13,6 +14,7 @@ export function AppProvider({ children }) {
   const [incomes, setIncomes] = useState([])
   const [budgets, setBudgets] = useState([])
   const [goals, setGoals] = useState([])
+  const [recurringTransactions, setRecurringTransactions] = useState([])
   const [loading, setLoading] = useState(true)
 
   const refresh = useCallback(async () => {
@@ -21,20 +23,23 @@ export function AppProvider({ children }) {
       setIncomes([])
       setBudgets([])
       setGoals([])
+      setRecurringTransactions([])
       setLoading(false)
       return
     }
     setLoading(true)
-    const [expensesRes, incomesRes, budgetsRes, goalsRes] = await Promise.all([
+    const [expensesRes, incomesRes, budgetsRes, goalsRes, recurringRes] = await Promise.all([
       expenseService.list(),
       incomeService.list(),
       budgetService.list(),
       goalService.list(),
+      recurringService.list(),
     ])
     setExpenses(expensesRes.items)
     setIncomes(incomesRes.items)
     setBudgets(budgetsRes.items)
     setGoals(goalsRes.items)
+    setRecurringTransactions(recurringRes.items)
     setLoading(false)
   }, [isAuthenticated])
 
@@ -98,12 +103,26 @@ export function AppProvider({ children }) {
     setGoals((prev) => prev.filter((g) => g.id !== id))
   }
 
+  const addRecurringTransaction = async (recurring) => {
+    const created = await recurringService.create(recurring)
+    setRecurringTransactions((prev) => [created, ...prev])
+  }
+  const updateRecurringTransaction = async (id, patch) => {
+    const updated = await recurringService.update(id, patch)
+    setRecurringTransactions((prev) => prev.map((r) => (r.id === id ? updated : r)))
+  }
+  const deleteRecurringTransaction = async (id) => {
+    await recurringService.remove(id)
+    setRecurringTransactions((prev) => prev.filter((r) => r.id !== id))
+  }
+
   const value = useMemo(
     () => ({
       expenses,
       incomes,
       budgets,
       goals,
+      recurringTransactions,
       loading,
       addExpense,
       updateExpense,
@@ -118,8 +137,11 @@ export function AppProvider({ children }) {
       updateGoal,
       addToGoal,
       deleteGoal,
+      addRecurringTransaction,
+      updateRecurringTransaction,
+      deleteRecurringTransaction,
     }),
-    [expenses, incomes, budgets, goals, loading],
+    [expenses, incomes, budgets, goals, recurringTransactions, loading],
   )
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
