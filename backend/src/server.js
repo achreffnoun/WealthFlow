@@ -10,6 +10,7 @@ import budgetRoutes from './routes/budgets.js'
 import goalRoutes from './routes/goals.js'
 import recurringRoutes from './routes/recurring.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
+import { startScheduler } from './scheduler.js'
 
 const app = express()
 
@@ -34,4 +35,5 @@ app.use(errorHandler)
 const port = process.env.PORT || 4000
 app.listen(port, () => {
   console.log(`API démarrée sur http://localhost:${port}`)
+  startScheduler()
 })

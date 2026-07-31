@@ -15,15 +15,3 @@ services:
         value: 7d
       - key: CORS_ORIGIN
         sync: false
-
-  - type: cron
-    name: wealthflow-recurring-cron
-    runtime: node
-    plan: free
-    rootDir: backend
-    schedule: "0 2 * * *"
-    buildCommand: npm install && npx prisma generate
-    startCommand: npm run generate:recurring
-    envVars:
-      - key: DATABASE_URL
-        sync: false
