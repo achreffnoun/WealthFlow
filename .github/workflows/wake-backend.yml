@@ -1,0 +1,20 @@
+name: Wake backend (Render free plan)
+
+# Le plan gratuit Render met le service en veille apres 15 min d'inactivite.
+# Le scheduler interne (backend/src/scheduler.js) ne tourne que si le process
+# est vivant, donc les transactions recurrentes prevues pendant la veille
+# ne se generent pas tant que rien ne reveille le service.
+# Ce ping quotidien reveille le dyno -> declenche generateRecurringTransactions()
+# au demarrage (rattrapage des occurrences manquees).
+
+on:
+  schedule:
+    - cron: '0 5 * * *' # 05:00 UTC chaque jour
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/health
+        run: curl -sf --retry 3 --retry-delay 20 --max-time 60 https://wealthflow-api-l5lr.onrender.com/api/health
